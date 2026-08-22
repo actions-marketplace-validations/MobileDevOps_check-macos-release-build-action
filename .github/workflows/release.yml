@@ -1,0 +1,37 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to point the major tag at (e.g. v1.2.3)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  major-tag:
+    name: Move floating major tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Move vX to this release
+        env:
+          TAG: ${{ github.event.release.tag_name || inputs.tag }}
+        run: |
+          set -euo pipefail
+          [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]] || {
+            echo "::error::'$TAG' is not a vX.Y.Z tag — skipping"; exit 1;
+          }
+          MAJOR="${TAG%%.*}"          # v1.2.3 -> v1
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -f "$MAJOR" "$TAG"
+          git push --force origin "refs/tags/$MAJOR"
+          echo "Moved $MAJOR -> $TAG" >>"$GITHUB_STEP_SUMMARY"

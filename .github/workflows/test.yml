@@ -1,0 +1,85 @@
+name: Test action
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fixtures:
+    name: ${{ matrix.kind }} fixture
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - kind: release
+            expect: pass
+          - kind: debug
+            expect: fail
+          - kind: dev
+            expect: fail
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build ${{ matrix.kind }} fixture
+        run: |
+          mkdir -p build
+          bash test/make-fixture.sh "${{ matrix.kind }}" build
+
+      - name: Run action
+        id: check
+        uses: ./
+        with:
+          path: build/Fixture.app
+          search-path: build
+          expected-bundle-id: com.mobiledevops.fixture
+          expected-version: 1.2.3
+          fail-on-error: false
+
+      - name: Assert expected result
+        env:
+          GOT: ${{ steps.check.outputs.result }}
+          WANT: ${{ matrix.expect }}
+        run: |
+          echo "result=$GOT (expected $WANT)"
+          [[ "$GOT" == "$WANT" ]] || { echo "::error::expected $WANT, got $GOT"; exit 1; }
+
+  auto-detect:
+    name: auto-detection and outputs
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build release fixture
+        run: |
+          mkdir -p build/nested/bundle/macos
+          bash test/make-fixture.sh release build/nested/bundle/macos
+
+      - name: Run action without an explicit path
+        id: check
+        uses: ./
+        with:
+          search-path: build
+
+      - name: Assert outputs
+        env:
+          RESULT: ${{ steps.check.outputs.result }}
+          VERSION: ${{ steps.check.outputs.version }}
+          BUNDLE_ID: ${{ steps.check.outputs.bundle-id }}
+          ARCHS: ${{ steps.check.outputs.architectures }}
+        run: |
+          [[ "$RESULT" == "pass" ]]            || { echo "::error::result=$RESULT"; exit 1; }
+          [[ "$VERSION" == "1.2.3" ]]          || { echo "::error::version=$VERSION"; exit 1; }
+          [[ "$BUNDLE_ID" == "com.mobiledevops.fixture" ]] || { echo "::error::bundle-id=$BUNDLE_ID"; exit 1; }
+          [[ "$ARCHS" == *arm64* ]]            || { echo "::error::archs=$ARCHS"; exit 1; }
+
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: shellcheck -S warning scripts/check-release-build.sh test/make-fixture.sh

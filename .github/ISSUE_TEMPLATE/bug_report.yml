@@ -1,0 +1,84 @@
+name: Bug Report
+description: A check reports the wrong verdict, or the action fails to run.
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Please include the step log — the action prints every check it ran.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened
+      description: Which check misbehaved, and what did you expect instead?
+      placeholder: The `arm64 slice present` check fails, but `lipo -archs` shows arm64.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of problem
+      options:
+        - False positive — a real release build is reported as failing
+        - False negative — a debug/dev build is reported as passing
+        - The action errors out or cannot run
+        - Wrong or missing output value
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Workflow step
+      description: The `uses:` / `with:` block for this action.
+      render: yaml
+      placeholder: |
+        - uses: mobiledevops/check-release-build-action@v1
+          with:
+            path: build/Release/MyApp.app
+            require-arch: universal
+    validations:
+      required: true
+
+  - type: textarea
+    id: log
+    attributes:
+      label: Step log
+      description: Output of the "Check release build" step — redact anything sensitive.
+      render: shell
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Action version
+      placeholder: "v1.0.0 or a commit SHA"
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      value: |
+        - Runner: macos-latest (macOS ...)
+        - Build toolchain: Xcode / Tauri / Electron / Go / other
+        - Bundle type: .app / .dmg
+        - Xcode version (if relevant):
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues.
+          required: true
+        - label: I ran the action on a macOS runner.
+          required: true

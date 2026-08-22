@@ -1,0 +1,137 @@
+name: 'Check macOS Release Build'
+description: >-
+  Verify a built macOS .app or .dmg is a real release build — optimized,
+  stripped, correct architecture, no dev-server URLs, no debug entitlements,
+  and consistent bundle metadata.
+author: 'mobiledevops'
+
+branding:
+  icon: 'check-circle'
+  color: 'purple'
+
+inputs:
+  path:
+    description: >-
+      Path to the .app bundle or .dmg to check. Leave empty to auto-detect the
+      most recently built bundle below `search-path`.
+    required: false
+    default: ''
+  search-path:
+    description: >-
+      Root directory used for auto-detection when `path` is empty. Narrow this
+      to your build output directory to keep detection fast and unambiguous.
+    required: false
+    default: '.'
+  require-arch:
+    description: 'Required architecture: arm64, x86_64, universal or any.'
+    required: false
+    default: 'arm64'
+  max-text-symbols:
+    description: >-
+      Maximum number of text symbols tolerated in the main binary before it is
+      flagged as unstripped.
+    required: false
+    default: '5'
+  dev-server-pattern:
+    description: >-
+      Extended regex that must NOT appear in the main binary. Defaults to a
+      localhost URL on a common dev-server port, which only a dev build embeds.
+    required: false
+    default: 'https?://(localhost|127\.0\.0\.1):(1420|3000|4200|5173|8080)'
+  require-signed:
+    description: 'Fail (instead of warn) when the bundle is not code signed.'
+    required: false
+    default: 'false'
+  expected-version:
+    description: >-
+      Assert CFBundleShortVersionString equals this value. A leading "v" is
+      stripped, so a tag name like `v1.4.0` works directly.
+    required: false
+    default: ''
+  expected-bundle-id:
+    description: 'Assert CFBundleIdentifier equals this value.'
+    required: false
+    default: ''
+  fail-on-warnings:
+    description: 'Treat warnings as failures.'
+    required: false
+    default: 'false'
+  fail-on-error:
+    description: >-
+      Fail the workflow step when the check does not pass. Set to false to keep
+      the workflow green and branch on the `result` output instead.
+    required: false
+    default: 'true'
+
+outputs:
+  result:
+    description: '`pass` or `fail`.'
+    value: ${{ steps.check.outputs.result }}
+  app-path:
+    description: 'Path of the .app bundle that was checked.'
+    value: ${{ steps.check.outputs.app-path }}
+  version:
+    description: 'CFBundleShortVersionString of the bundle.'
+    value: ${{ steps.check.outputs.version }}
+  bundle-id:
+    description: 'CFBundleIdentifier of the bundle.'
+    value: ${{ steps.check.outputs.bundle-id }}
+  min-os:
+    description: 'LSMinimumSystemVersion of the bundle.'
+    value: ${{ steps.check.outputs.min-os }}
+  architectures:
+    description: 'Architecture slices found in the main binary.'
+    value: ${{ steps.check.outputs.architectures }}
+  passed:
+    description: 'Number of checks that passed.'
+    value: ${{ steps.check.outputs.passed }}
+  failed:
+    description: 'Number of checks that failed.'
+    value: ${{ steps.check.outputs.failed }}
+  warnings:
+    description: 'Number of warnings.'
+    value: ${{ steps.check.outputs.warnings }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Verify runner is macOS
+      shell: bash
+      run: |
+        if [[ "$(uname)" != "Darwin" ]]; then
+          echo "::error title=Unsupported runner::check-release-build-action requires a macOS runner (runs-on: macos-latest)."
+          exit 1
+        fi
+
+    - name: Check release build
+      id: check
+      shell: bash
+      continue-on-error: true
+      env:
+        APP_PATH: ${{ inputs.path }}
+        SEARCH_PATH: ${{ inputs.search-path }}
+        REQUIRE_ARCH: ${{ inputs.require-arch }}
+        MAX_TEXT_SYMBOLS: ${{ inputs.max-text-symbols }}
+        DEV_SERVER_PATTERN: ${{ inputs.dev-server-pattern }}
+        REQUIRE_SIGNED: ${{ inputs.require-signed }}
+        EXPECTED_VERSION: ${{ inputs.expected-version }}
+        EXPECTED_BUNDLE_ID: ${{ inputs.expected-bundle-id }}
+        FAIL_ON_WARNINGS: ${{ inputs.fail-on-warnings }}
+      run: bash "${{ github.action_path }}/scripts/check-release-build.sh"
+
+    - name: Report result
+      shell: bash
+      env:
+        RESULT: ${{ steps.check.outputs.result }}
+        OUTCOME: ${{ steps.check.outcome }}
+        FAIL_ON_ERROR: ${{ inputs.fail-on-error }}
+      run: |
+        if [[ "$OUTCOME" == "failure" && -z "$RESULT" ]]; then
+          echo "::error title=Release build check::the check could not run — see the log above."
+          exit 1
+        fi
+        if [[ "$RESULT" != "pass" && "$FAIL_ON_ERROR" == "true" ]]; then
+          echo "::error title=Release build check::not a clean release build — see the annotations above."
+          exit 1
+        fi
+        echo "result=$RESULT"

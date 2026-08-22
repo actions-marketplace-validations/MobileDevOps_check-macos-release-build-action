@@ -1,0 +1,20 @@
+# Build output and test fixtures
+build/
+dist/
+*.app/
+*.dmg
+*.dSYM/
+
+# macOS
+.DS_Store
+.AppleDouble
+._*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Logs and temp
+*.log
+tmp/

@@ -1,0 +1,41 @@
+name: Feature Request
+description: Suggest a new check, input, or output.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Signing and notarization are deliberately out of scope — this action judges the build
+        itself, not its distribution credentials.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What slipped through CI that this would have caught?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed check or option
+      description: What would it inspect, and what makes a bundle pass or fail?
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: criteria
+    attributes:
+      label: Does it fit the action's scope?
+      options:
+        - label: Toolchain-agnostic — true for any macOS `.app`, not just one bundler
+        - label: Low false-positive risk — a legitimate release build never trips it
+        - label: Cheap — no network access, no notarization round-trip
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Can an existing input (e.g. `dev-server-pattern`) already cover this?

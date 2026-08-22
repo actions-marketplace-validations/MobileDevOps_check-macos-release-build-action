@@ -1,0 +1,17 @@
+title: "[Announcement] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: Releases, new checks, breaking changes, and deprecations.
+  - type: textarea
+    id: announcement
+    attributes:
+      label: Announcement
+    validations:
+      required: true
+  - type: textarea
+    id: action-required
+    attributes:
+      label: Action required by consumers
+      description: What, if anything, do users of `@v1` need to change?

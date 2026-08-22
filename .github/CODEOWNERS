@@ -1,0 +1,8 @@
+# Global owner — reviews every PR by default
+*                       @messeb
+
+# The check logic and its fixtures are the core of the action
+/scripts/               @messeb
+/test/                  @messeb
+/action.yml             @messeb
+/.github/workflows/     @messeb

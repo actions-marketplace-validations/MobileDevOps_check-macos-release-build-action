@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Question or idea
+    url: https://github.com/mobiledevops/check-release-build-action/discussions
+    about: Ask why a build fails a check, or propose an idea before opening an issue.
+  - name: 🔒 Security vulnerability
+    url: https://github.com/mobiledevops/check-release-build-action/security/advisories/new
+    about: Report security issues privately — never in a public issue.

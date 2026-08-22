@@ -1,0 +1,17 @@
+version: 2
+updates:
+  # The action itself is a composite action with no package dependencies —
+  # only the actions used by its own workflows need updating.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "messeb"
+    labels:
+      - "dependencies"
+      - "automated"
+    commit-message:
+      prefix: "chore"
+      include: "scope"

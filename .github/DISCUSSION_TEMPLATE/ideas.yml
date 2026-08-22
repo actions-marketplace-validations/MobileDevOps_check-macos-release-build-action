@@ -1,0 +1,19 @@
+title: "[Idea] "
+labels: []
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What release-build problem would this catch?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed check or option
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered

@@ -1,0 +1,23 @@
+# Normalize line endings — shell scripts must stay LF or bash breaks on checkout
+* text=auto eol=lf
+
+*.sh   text eol=lf
+*.yml  text eol=lf
+*.yaml text eol=lf
+*.md   text eol=lf
+
+# Binary files — never diff or merge
+*.png  binary
+*.jpg  binary
+*.gif  binary
+*.ico  binary
+*.icns binary
+*.dmg  binary
+*.zip  binary
+*.gz   binary
+
+# Keep `git archive` / release tarballs lean
+.github/       export-ignore
+test/          export-ignore
+.gitattributes export-ignore
+.gitignore     export-ignore

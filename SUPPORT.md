@@ -9,11 +9,11 @@
 
 1. Read the README — most questions are about `search-path` auto-detection or the
    `dev-server-pattern` default.
-2. Search [existing issues](https://github.com/mobiledevops/check-release-build-action/issues).
-3. Ask in [Discussions](https://github.com/mobiledevops/check-release-build-action/discussions) —
+2. Search [existing issues](https://github.com/MobileDevOps/check-macos-release-build-action/issues).
+3. Ask in [Discussions](https://github.com/MobileDevOps/check-macos-release-build-action/discussions) —
    best for "why does my build fail this check?" questions.
 4. For a confirmed bug, open an issue with the
-   [bug report template](https://github.com/mobiledevops/check-release-build-action/issues/new?template=bug_report.yml).
+   [bug report template](https://github.com/MobileDevOps/check-macos-release-build-action/issues/new?template=bug_report.yml).
 
 ## What to include when asking
 

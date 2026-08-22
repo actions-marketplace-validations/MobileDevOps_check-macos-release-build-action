@@ -26,4 +26,4 @@ adheres to [Semantic Versioning](https://semver.org/).
 - Community health files, issue/PR/discussion templates, `CODEOWNERS`, Dependabot config, and a
   release workflow that moves the floating major tag.
 
-[Unreleased]: https://github.com/mobiledevops/check-release-build-action/commits/main
+[Unreleased]: https://github.com/MobileDevOps/check-macos-release-build-action/commits/main

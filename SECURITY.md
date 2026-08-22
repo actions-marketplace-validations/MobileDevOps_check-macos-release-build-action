@@ -15,7 +15,7 @@ requires immutable references.
 **Do not open a public issue for security vulnerabilities.**
 
 Report privately via
-[GitHub Private Vulnerability Reporting](https://github.com/mobiledevops/check-release-build-action/security/advisories/new),
+[GitHub Private Vulnerability Reporting](https://github.com/MobileDevOps/check-macos-release-build-action/security/advisories/new),
 or by email to <sebastian@messeb.com>.
 
 Please include:

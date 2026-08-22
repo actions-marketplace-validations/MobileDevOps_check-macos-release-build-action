@@ -1,7 +1,7 @@
 # Check macOS Release Build
 
-[![Test action](https://github.com/mobiledevops/check-release-build-action/actions/workflows/test.yml/badge.svg)](https://github.com/mobiledevops/check-release-build-action/actions/workflows/test.yml)
-[![GitHub Marketplace](https://img.shields.io/badge/marketplace-check--release--build-purple?logo=github)](https://github.com/marketplace/actions/check-macos-release-build)
+[![Test action](https://github.com/MobileDevOps/check-macos-release-build-action/actions/workflows/test.yml/badge.svg)](https://github.com/MobileDevOps/check-macos-release-build-action/actions/workflows/test.yml)
+[![GitHub Marketplace](https://img.shields.io/badge/marketplace-check--macos--release--build-purple?logo=github)](https://github.com/marketplace/actions/check-macos-release-build)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 A GitHub Action that verifies a built macOS `.app` (or `.dmg`) really is a **release** build —
@@ -39,7 +39,7 @@ jobs:
 
       # ... build your app ...
 
-      - uses: mobiledevops/check-release-build-action@v1
+      - uses: MobileDevOps/check-macos-release-build-action@v1
         with:
           path: build/Release/MyApp.app
 ```
@@ -51,7 +51,7 @@ your build output directory — searching from the repo root works, but is slowe
 wrong bundle if several exist:
 
 ```yaml
-      - uses: mobiledevops/check-release-build-action@v1
+      - uses: MobileDevOps/check-macos-release-build-action@v1
         with:
           search-path: build/Release
 ```
@@ -59,7 +59,7 @@ wrong bundle if several exist:
 ### Gate a release on the tag version
 
 ```yaml
-      - uses: mobiledevops/check-release-build-action@v1
+      - uses: MobileDevOps/check-macos-release-build-action@v1
         with:
           path: dist/MyApp.dmg
           expected-version: ${{ github.ref_name }}   # leading "v" is stripped
@@ -71,7 +71,7 @@ wrong bundle if several exist:
 
 ```yaml
       - id: check
-        uses: mobiledevops/check-release-build-action@v1
+        uses: MobileDevOps/check-macos-release-build-action@v1
         with:
           path: dist/MyApp.app
           fail-on-error: false
@@ -83,7 +83,7 @@ wrong bundle if several exist:
 ### Universal binaries
 
 ```yaml
-      - uses: mobiledevops/check-release-build-action@v1
+      - uses: MobileDevOps/check-macos-release-build-action@v1
         with:
           path: dist/MyApp.app
           require-arch: universal
@@ -165,7 +165,7 @@ for the development setup and what makes a good check. Participation is covered 
 ## Support
 
 Questions and "why does my build fail this check?" belong in
-[Discussions](https://github.com/mobiledevops/check-release-build-action/discussions) —
+[Discussions](https://github.com/MobileDevOps/check-macos-release-build-action/discussions) —
 see [SUPPORT.md](SUPPORT.md).
 
 ## Security

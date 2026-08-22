@@ -37,7 +37,7 @@ body:
       description: The `uses:` / `with:` block for this action.
       render: yaml
       placeholder: |
-        - uses: mobiledevops/check-release-build-action@v1
+        - uses: MobileDevOps/check-macos-release-build-action@v1
           with:
             path: build/Release/MyApp.app
             require-arch: universal

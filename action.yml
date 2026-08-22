@@ -3,7 +3,7 @@ description: >-
   Verify a built macOS .app or .dmg is a real release build — optimized,
   stripped, correct architecture, no dev-server URLs, no debug entitlements,
   and consistent bundle metadata.
-author: 'mobiledevops'
+author: 'MobileDevOps'
 
 branding:
   icon: 'check-circle'
@@ -99,7 +99,7 @@ runs:
       shell: bash
       run: |
         if [[ "$(uname)" != "Darwin" ]]; then
-          echo "::error title=Unsupported runner::check-release-build-action requires a macOS runner (runs-on: macos-latest)."
+          echo "::error title=Unsupported runner::check-macos-release-build-action requires a macOS runner (runs-on: macos-latest)."
           exit 1
         fi
 

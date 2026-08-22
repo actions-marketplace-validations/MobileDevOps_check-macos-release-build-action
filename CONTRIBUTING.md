@@ -7,8 +7,8 @@ Thanks for wanting to improve this action.
 Requires macOS — the checks use `lipo`, `otool`, `nm`, `strings`, `codesign` and `PlistBuddy`.
 
 ```bash
-git clone https://github.com/mobiledevops/check-release-build-action.git
-cd check-release-build-action
+git clone https://github.com/MobileDevOps/check-macos-release-build-action.git
+cd check-macos-release-build-action
 
 # Build a fixture bundle and run the script against it
 mkdir -p build
@@ -29,7 +29,7 @@ shellcheck -S warning scripts/check-release-build.sh test/make-fixture.sh
 
 ### Reporting bugs
 
-Search [existing issues](https://github.com/mobiledevops/check-release-build-action/issues) first.
+Search [existing issues](https://github.com/MobileDevOps/check-macos-release-build-action/issues) first.
 Include the failing check line, your workflow step, and how the bundle was built —
 see [SUPPORT.md](SUPPORT.md).
 

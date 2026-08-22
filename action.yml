@@ -1,8 +1,5 @@
 name: 'Check macOS Release Build'
-description: >-
-  Verify a built macOS .app or .dmg is a real release build — optimized,
-  stripped, correct architecture, no dev-server URLs, no debug entitlements,
-  and consistent bundle metadata.
+description: 'Verify a macOS .app or .dmg is a real release build: optimized, stripped, correct arch, no debug leftovers.'
 author: 'MobileDevOps'
 
 branding:
